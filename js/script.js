@@ -72,6 +72,7 @@ window.onload = function () {
     let videos = document.querySelectorAll(".swVisual video");
     // console.log(video);
     // 비디오 시간 체크
+    // 비디오 재생시간을 보관할 배열 생성
     let videosTimeArr = [];
     for(let i = 0; i < videos.length; i++){
         // console.log(videos[i].duration);
@@ -92,11 +93,17 @@ window.onload = function () {
         // 다음 화면에 보이는 swiper 슬라이드 번호
         videoIndex = swVisual.realIndex;
         // 현재 보이는 슬라이드에 해당하는 비디오의 재생시간을 처음설정
+        // 다음 비디오 재생
+        // 처음으로 비디오 이동
+        // currentTime : 현재 비디오 재생위치를 나타냄
+        // 이속성을 조작해서 비디오 재생위치를 변경
+        //  https://solbel.tistory.com/1912 참고
         videos[videoIndex].currentTime = 0;
         const playPromise = videos[videoIndex].play();
         if(playPromise !== undefined){
             playPromise.then((_)=>{}).catch((error) => {})
         }
+
         clearInterval(videoTimer);
         videoReset();
     })
@@ -106,6 +113,7 @@ window.onload = function () {
     // 늘어나는 길이를 위한 값(최대 100)
     let barScaleW = 0;
     // 타이머를 생성한다.
+    // 비디오 타이머 초기화 및 설정
     let videoTimer;
 
     function videoReset(){
@@ -132,10 +140,13 @@ window.onload = function () {
     videoReset();
     const visualControlLi = document.querySelectorAll(".visual-control li");
     visualControlLi.forEach((item, index) => {
+        // 클릭했을때 슬라이드 번호로 넘어간다
         item.addEventListener("click", function(){
             videoIndex = index;
             swVisual.slideTo(videoIndex)
         })
     })
 
+
+    AOS.init();
 };
